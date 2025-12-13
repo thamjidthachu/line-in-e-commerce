@@ -1,0 +1,58 @@
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Leaf, Truck, Shield } from "lucide-react"
+
+export function BannerSection() {
+  return (
+    <>
+      {/* Main Banner */}
+      <section className="bg-primary py-16 text-primary-foreground md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">
+              Sustainable Fashion for a Better Tomorrow
+            </h2>
+            <p className="mb-8 text-pretty text-lg opacity-90">
+              Our linen is sourced from sustainable farms and crafted with care for the environment. Join us in making
+              fashion more sustainable.
+            </p>
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/shop">Discover Our Story</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Banner */}
+      <section className="border-y border-border bg-secondary/30 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <Leaf className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="mb-2 font-semibold">100% Sustainable</h3>
+              <p className="text-sm text-muted-foreground">Eco-friendly linen from certified sustainable sources</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <Truck className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="mb-2 font-semibold">Free Shipping</h3>
+              <p className="text-sm text-muted-foreground">Free delivery on orders over $100</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <Shield className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="mb-2 font-semibold">Quality Guarantee</h3>
+              <p className="text-sm text-muted-foreground">30-day return policy on all products</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
