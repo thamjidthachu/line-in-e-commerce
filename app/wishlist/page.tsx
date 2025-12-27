@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import Link from "next/link"
 import { Heart, ShoppingCart, Trash2, ArrowRight } from "lucide-react"
-import { products } from "@/lib/products"
 import { ProductCard } from "@/components/product-card"
 import { useState } from "react"
 
@@ -16,8 +15,7 @@ function WishlistContent() {
   const { wishlist, removeFromWishlist, addToCart } = useCart()
   const [addingProduct, setAddingProduct] = useState<string | null>(null)
 
-  // Get related products (products not in wishlist)
-  const relatedProducts = products.filter((p) => !wishlist.some((item) => item.id === p.id)).slice(0, 4)
+
 
   const handleAddToCart = (productId: string) => {
     const product = wishlist.find((p) => p.id === productId)
@@ -53,7 +51,7 @@ function WishlistContent() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {wishlist.map((product) => (
           <Card key={product.id} className="group overflow-hidden">
-            <Link href={`/product/${product.id}`} className="relative block aspect-square overflow-hidden bg-muted">
+            <Link href={`/product/${product.slug}`} className="relative block aspect-square overflow-hidden bg-muted">
               <Image
                 src={product.images[0] || "/placeholder.svg"}
                 alt={product.name}
@@ -74,7 +72,7 @@ function WishlistContent() {
             </Link>
 
             <CardContent className="p-4">
-              <Link href={`/product/${product.id}`} className="block">
+              <Link href={`/product/${product.slug}`} className="block">
                 <h3 className="mb-1 font-semibold hover:text-primary line-clamp-1">{product.name}</h3>
                 <p className="mb-2 text-sm text-muted-foreground line-clamp-2">{product.description}</p>
                 <p className="mb-4 text-xl font-bold">${product.price}</p>
@@ -98,17 +96,6 @@ function WishlistContent() {
         ))}
       </div>
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-12">
-          <h2 className="mb-6 text-2xl font-bold">Discover More</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {relatedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      )}
     </>
   )
 }

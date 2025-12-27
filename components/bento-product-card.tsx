@@ -36,7 +36,7 @@ export function BentoProductCard({ product, className }: BentoProductCardProps) 
 
   return (
     <Link
-      href={`/product/${product.id}`}
+      href={`/product/${product.slug}`}
       className={cn(
         "group relative overflow-hidden rounded-lg border border-border bg-card transition-all hover:shadow-lg",
         className,

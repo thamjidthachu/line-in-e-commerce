@@ -9,14 +9,12 @@ import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import Link from "next/link"
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react"
-import { products } from "@/lib/products"
 import { ProductCard } from "@/components/product-card"
 
 function CartContent() {
   const { cart, cartTotal, updateQuantity, removeFromCart } = useCart()
 
-  // Get related products (products not in cart)
-  const relatedProducts = products.filter((p) => !cart.some((item) => item.id === p.id)).slice(0, 4)
+
 
   const shipping = cartTotal > 100 ? 0 : 10
   const tax = cartTotal * 0.08 // 8% tax
@@ -52,7 +50,7 @@ function CartContent() {
                 <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}>
                   <div className="flex gap-4">
                     <Link
-                      href={`/product/${item.id}`}
+                      href={`/product/${item.slug}`}
                       className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-muted"
                     >
                       <Image src={item.images[0] || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
@@ -61,7 +59,7 @@ function CartContent() {
                     <div className="flex flex-1 flex-col">
                       <div className="flex justify-between">
                         <div className="flex-1">
-                          <Link href={`/product/${item.id}`} className="font-semibold hover:text-primary">
+                          <Link href={`/product/${item.slug}`} className="font-semibold hover:text-primary">
                             {item.name}
                           </Link>
                           <p className="text-sm text-muted-foreground">
@@ -160,17 +158,6 @@ function CartContent() {
         </div>
       </div>
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-12">
-          <h2 className="mb-6 text-2xl font-bold">You May Also Like</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {relatedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      )}
     </>
   )
 }

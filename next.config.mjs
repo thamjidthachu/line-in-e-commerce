@@ -14,7 +14,14 @@ const nextConfig = {
     // Disable optimization for static export or simple deployments
     unoptimized: process.env.NEXT_IMAGE_UNOPTIMIZED === 'true',
     // Domains for remote images (if needed)
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8000',
+        pathname: '/media/**',
+      },
+    ],
   },
 
   // Fast refresh and hot module reloading configuration

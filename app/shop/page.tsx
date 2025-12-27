@@ -3,14 +3,15 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CartProvider } from "@/lib/cart-context"
-import { products } from "@/lib/products"
+import { type Product } from "@/lib/products"
+import { fetchProducts } from "@/lib/api"
 import { ProductCard } from "@/components/product-card"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { LayoutGrid, LayoutList, ChevronLeft, ChevronRight } from "lucide-react"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { BentoProductCard } from "@/components/bento-product-card"
 
 export default function ShopPage() {
@@ -18,10 +19,26 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("featured")
   const [category, setCategory] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
+  const [productsList, setProductsList] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const itemsPerPage = 8
 
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await fetchProducts()
+        setProductsList(data)
+      } catch (error) {
+        console.error("Failed to load products", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadProducts()
+  }, [])
+
   const filteredProducts = useMemo(() => {
-    let filtered = [...products]
+    let filtered = [...productsList]
 
     // Filter by category
     if (category !== "all") {
@@ -48,7 +65,7 @@ export default function ShopPage() {
     }
 
     return filtered
-  }, [category, sortBy])
+  }, [category, sortBy, productsList])
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -124,14 +141,20 @@ export default function ShopPage() {
               </div>
             </div>
 
+
             {/* Products Grid/Bento */}
-            {viewMode === "grid" ? (
+            {loading ? (
+              <div className="flex h-64 items-center justify-center">
+                <div className="text-lg text-muted-foreground">Loading products...</div>
+              </div>
+            ) : viewMode === "grid" ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {currentProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
+
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-[280px]">
                 {currentProducts.map((product, index) => (
                   <BentoProductCard
